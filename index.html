@@ -13,8 +13,14 @@
     </div>
     <h2>アップロードした画像</h2>
     <div class="preview" id="preview"></div>
-    <button>-</button>
-    <button>+</button>
+    <div class="zoom">
+        <div id="zoom-out">
+            <button>-</button>
+        </div>
+        <div id="zoom-in">
+            <button>+</button>
+        </div>
+    </div>
     <br>
     <input type="submit" style="margin-top: 50px">
 </form>
@@ -22,6 +28,8 @@
     var dropZone = document.getElementById('drop-zone');
     var preview = document.getElementById('preview');
     var fileInput = document.getElementById('file-input');
+    var zoomIn = document.getElementById('zoom-in');
+    var zoomOut = document.getElementById('zoom-out');
 
     dropZone.addEventListener('dragover', function(e) {
         e.stopPropagation();
@@ -49,12 +57,31 @@
         previewFile(files[0]);
     }, false);
 
+    zoomOut.addEventListener('click', function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        imgEl = document.querySelector('.prv-img')
+        height = imgEl.clientHeight + 20;
+        imgEl.style.height = height + 'px';
+    });
+
+    zoomIn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        e.stopPropagation();
+        e.preventDefault();
+        imgEl = document.querySelector('.prv-img')
+        height = imgEl.clientHeight - 20;
+        imgEl.style.height = height + 'px';
+    });
+
     function previewFile(file) {
         /* FileReaderで読み込み、プレビュー画像を表示。 */
         var fr = new FileReader();
         fr.readAsDataURL(file);
         fr.onload = function() {
             var img = document.createElement('img');
+            img.className = 'prv-img';
             img.setAttribute('src', fr.result);
             preview.innerHTML = '';
             preview.appendChild(img);
